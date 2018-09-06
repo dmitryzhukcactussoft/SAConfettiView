@@ -23,6 +23,20 @@ public class SAConfettiView: UIView {
     public var colors: [UIColor]!
     public var intensity: Float!
     public var type: ConfettiType!
+    
+    public var birthRate: Float = 6.0
+    public var lifetime: Float = 14.0
+    public var lifetimeRange: Float = 0
+    public var velocity: Float = 350.0
+    public var velocityRange: Float = 80.0
+    public var emissionLongitude = CGFloat(Double.pi)
+    public var emissionRange: CGFloat = CGFloat(Double.pi)
+    public var spin: CGFloat = 3.5
+    public var spinRange: Float = 4.0
+    public var scaleSpeed: Float = -0.1
+    public var alphaRange: Float = 0
+    public var alphaSpeed: Float = 0
+    
     private var active :Bool!
 
     required public init?(coder aDecoder: NSCoder) {
@@ -49,9 +63,9 @@ public class SAConfettiView: UIView {
     public func startConfetti() {
         emitter = CAEmitterLayer()
 
-        emitter.emitterPosition = CGPoint(x: frame.size.width / 2.0, y: 0)
-        emitter.emitterShape = kCAEmitterLayerLine
-        emitter.emitterSize = CGSize(width: frame.size.width, height: 1)
+        emitter.emitterPosition = CGPoint(x: frame.size.width / 2, y: 0)
+        emitter.emitterShape = kCAEmitterLayerRectangle
+        emitter.emitterSize = CGSize(width: frame.size.width * 1.6, height: 1)
 
         var cells = [CAEmitterCell]()
         for color in colors {
@@ -97,21 +111,23 @@ public class SAConfettiView: UIView {
         }
         return nil
     }
-
+    
     func confettiWithColor(color: UIColor) -> CAEmitterCell {
         let confetti = CAEmitterCell()
-        confetti.birthRate = 6.0 * intensity
-        confetti.lifetime = 14.0 * intensity
-        confetti.lifetimeRange = 0
+        confetti.birthRate = birthRate * intensity
+        confetti.lifetime = lifetime * intensity
+        confetti.lifetimeRange = lifetimeRange
         confetti.color = color.cgColor
-        confetti.velocity = CGFloat(350.0 * intensity)
-        confetti.velocityRange = CGFloat(80.0 * intensity)
-        confetti.emissionLongitude = CGFloat(Double.pi)
-        confetti.emissionRange = CGFloat(Double.pi)
-        confetti.spin = CGFloat(3.5 * intensity)
-        confetti.spinRange = CGFloat(4.0 * intensity)
+        confetti.velocity = CGFloat(velocity * intensity)
+        confetti.velocityRange = CGFloat(velocityRange * intensity)
+        confetti.emissionLongitude = emissionLongitude
+        confetti.emissionRange = emissionRange
+        confetti.spin = spin
+        confetti.spinRange = CGFloat(spinRange * intensity)
         confetti.scaleRange = CGFloat(intensity)
-        confetti.scaleSpeed = CGFloat(-0.1 * intensity)
+        confetti.scaleSpeed = CGFloat(scaleSpeed * intensity)
+        confetti.alphaRange = alphaRange
+        confetti.alphaSpeed = alphaSpeed
         confetti.contents = imageForType(type: type)!.cgImage
         return confetti
     }
